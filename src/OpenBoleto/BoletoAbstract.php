@@ -252,6 +252,14 @@ abstract class BoletoAbstract
     protected $instrucoes = array('Pagar até a data do vencimento.');
 
     /**
+     * Recebe o Objeto que conterá o número febraban e a linha digitável.
+     * Muito útil para casos em que estes números são gerados por programas de terceitos
+     * 
+     * @var Febraban|null
+     */
+    protected $febraban = null;
+
+    /**
      * Nome do arquivo de template a ser usado
      * @var string
      */
@@ -1000,10 +1008,29 @@ abstract class BoletoAbstract
     }
 
     /**
+     * @param   Febraban  $febraban
+     * @return  this
+     */
+    public function setFebraban(Febraban $febraban)
+    {
+        $this->febraban = $febraban;
+
+        return $this;
+    }
+
+    /**
+     * @return  Febraban|null
+     */
+    public function getFebraban()
+    {
+        return $this->febraban;
+    }
+
+    /**
      * Define o nome da atual arquivo de view (template)
      *
-     * @param string $layout
-     * @return BoletoAbstract
+     * @param   string  $layout
+     * @return  BoletoAbstract
      */
     public function setLayout($layout)
     {
@@ -1030,6 +1057,7 @@ abstract class BoletoAbstract
     public function setResourcePath($resourcePath)
     {
         $this->resourcePath = $resourcePath;
+
         return $this;
     }
 
@@ -1046,12 +1074,13 @@ abstract class BoletoAbstract
     /**
      * Define a localização do logotipo do banco relativo à pasta de imagens
      *
-     * @param string $logoBanco
-     * @return BoletoAbstract
+     * @param   string  $logoBanco
+     * @return  BoletoAbstract
      */
     public function setLogoBanco($logoBanco)
     {
         $this->logoBanco = $logoBanco;
+
         return $this;
     }
 
@@ -1085,8 +1114,8 @@ abstract class BoletoAbstract
      * Define a localização exata do logotipo da empresa.
      * Note que este não é relativo à pasta de imagens
      *
-     * @param string $logoPath
-     * @return BoletoAbstract
+     * @param   string  $logoPath
+     * @return  BoletoAbstract
      */
     public function setLogoPath($logoPath)
     {
@@ -1128,7 +1157,7 @@ abstract class BoletoAbstract
         // TODO: Fazer cache do nosso número para evitar múltiplas chamadas
 
         // Remove a formatação, caso especificado
-        if (!$incluirFormatacao) {
+        if ( ! $incluirFormatacao ) {
             return str_replace(array('.', '/', ' ', '-'), '', $numero);
         }
 
@@ -1268,6 +1297,10 @@ abstract class BoletoAbstract
      */
     public function getNumeroFebraban()
     {
+        if ( ! is_null($this->febraban) ) {
+            return $this->febraban->getNumeroFebraban();
+        }
+
         return self::zeroFill($this->getCodigoBanco(), 3) . $this->getMoeda() . $this->getDigitoVerificador() . $this->getFatorVencimento() . $this->getValorZeroFill() . $this->getCampoLivre();
     }
 
@@ -1291,6 +1324,10 @@ abstract class BoletoAbstract
      */
     public function getLinhaDigitavel()
     {
+        if ( ! is_null($this->febraban) ) {
+            return $this->febraban->getLinhaDigitavel();
+        }
+
         $chave = $this->getCampoLivre();
 
         // Break down febraban positions 20 to 44 into 3 blocks of 5, 10 and 10
