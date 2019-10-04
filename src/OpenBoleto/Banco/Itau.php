@@ -66,6 +66,7 @@ class Itau extends BoletoAbstract
         '148', '149', '153', '108', '180', '121', '150', '109', '191', '116', '117', '119',
         '134', '135', '136', '104', '188', '147', '112', '115', '177', '172', '107', '204',
         '205', '206', '173', '196', '103', '102', '174', '198', '167', '202', '203', '175',
+        '157',
     );
 
     /**
@@ -175,7 +176,7 @@ class Itau extends BoletoAbstract
     public function getViewVars()
     {
         return array(
-            'carteira' => null, // Campo não utilizado pelo Itaú
+            'carteira' => $this->getCarteira(), // Campo não utilizado pelo Itaú
         );
     }
 }

@@ -33,6 +33,7 @@
 <body>
 
     <div style="width: 666px">
+    	<?php if ($imprime_instrucoes_impressao) :?>    
         <div class="noprint info">
             <h2>Instruções de Impressão</h2>
             <ul>
@@ -46,8 +47,9 @@
             <?php if ($valor_documento) : ?><span class="header">Valor: R$ <?php echo $valor_documento; ?></span><?php endif ?>
             <?php if ($pagamento_minimo) : ?><span class="header">Pagamento mínimo: R$ <?php echo $pagamento_minimo; ?></span><?php endif ?>
             <br>
-            <div class="linha-pontilhada" style="margin-bottom: 20px;">Recibo do sacado</div>
+            <div class="linha-pontilhada" style="margin-bottom: 20px;">Recibo do pagador</div>
         </div>
+        <?php endif ?>
 
         <div class="info-empresa">
             <?php if ($logotipo) : ?>

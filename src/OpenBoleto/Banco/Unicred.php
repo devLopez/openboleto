@@ -45,7 +45,7 @@ class Unicred extends BoletoAbstract
      * Código do banco
      * @var string
      */
-    protected $codigoBanco = '090';
+    protected $codigoBanco = '136';
 
     /**
      * Localização do logotipo do banco, referente ao diretório de imagens
@@ -67,7 +67,7 @@ class Unicred extends BoletoAbstract
     protected function gerarNossoNumero()
     {
         $numero = self::zeroFill($this->getSequencial(), 10);
-        $dv = static::modulo11($numero);
+        $dv = $this->modulo11($numero,7);
         $numero .= '-' . $dv['digito'];
 
         return $numero;

@@ -1,24 +1,26 @@
-# OpenBoleto [![Stories in Ready](http://badge.waffle.io/kriansa/openboleto.png)](http://waffle.io/kriansa/openboleto) [![Build Status](https://api.travis-ci.org/kriansa/openboleto.png)](https://travis-ci.org/kriansa/openboleto) 
+
+# OpenBoleto [![Stories in Ready](http://badge.waffle.io/fredroo/openboleto.png)](http://waffle.io/fredroo/openboleto) [![Build Status](https://travis-ci.org/fredroo/openboleto.png)](https://travis-ci.org/fredroo/openboleto)
+
+
 
 O OpenBoleto é uma biblioteca de código aberto para geração de boletos bancários, um meio de pagamento muito comum no Brasil. O foco é ser simples e ter uma arquitetura compatível com os recursos mais modernos do PHP.
+
+## Ajude o Projeto a continuar, faça uma doação!
+
+
+[![Pague com PagSeguro - é rápido, grátis e seguro!](https://stc.pagseguro.uol.com.br/public/img/botoes/doacoes/209x48-doar-assina.gif)](https://pag.ae/7UaL6CCHQ)
 
 ## Instalação
 ### Composer
 Se você já conhece o **Composer** (o que é extremamente recomendado), simplesmente adicione a dependência abaixo à diretiva *"require"* seu **composer.json**:
 ```
-"kriansa/openboleto": "dev-master"
+"openboleto/openboleto": "dev-master"
 ```
-
-Ou, caso você deseje usar o release v1.0 (12/08/2013)
-```
-"kriansa/openboleto": "v1.0"
-```
-
 ###PSR-0 autoloader
-Hoje praticamente qualquer framework utiliza deste padrão, então você deve [baixar](https://github.com/kriansa/openboleto/archive/master.zip) o OpenBoleto, colocar em uma pasta específica (geralmente *lib* ou *vendor*) e procurar na documentação do seu framework para fazer com que o seu autoloader aponte o namespace **OpenBoleto** para a pasta **src** do OpenBoleto.
+Hoje praticamente qualquer framework utiliza deste padrão, então você deve [baixar](https://github.com/fredroo/openboleto/archive/master.zip) o OpenBoleto, colocar em uma pasta específica (geralmente *lib* ou *vendor*) e procurar na documentação do seu framework para fazer com que o seu autoloader aponte o namespace **OpenBoleto** para a pasta **src** do OpenBoleto.
 
 ###Stand-alone library
-Se você quer simplesmente baixar e dar um include, também é muito simples. Primeiro [baixe](https://github.com/kriansa/openboleto/archive/master.zip) (ou dê clone no repositório), e coloque em uma pasta específica. Depois, dê um include no arquivo **autoloader.php** e voilá!
+Se você quer simplesmente baixar e dar um include, também é muito simples. Primeiro [baixe](https://github.com/fredroo/openboleto/archive/master.zip) (ou dê clone no repositório), e coloque em uma pasta específica. Depois, dê um include no arquivo **autoloader.php** e voilá!
 
 ## Gerando boletos
 Essa é a melhor parte. Não poderia ser mais simples, veja um exemplo básico:
@@ -50,13 +52,88 @@ Sim, só isso! Lembre-se de que cada banco possui alguma particularidade, mas em
 ## Bancos suportados
 Atualmente o OpenBoleto funciona com os bancos abaixo:
 
-* Banco de Brasília (BRB)
-* Banco do Brasil
-* Bradesco
-* Caixa (SIGCB)
-* Itaú
-* Santander
-* Unicred
+<table>
+ <tr>
+  <th>Banco</th>
+  <th>Situação HTML</th>
+  <th>Situação JasperPHP(PDF)</th>
+ </tr>
+ <tr>
+ <td>Banco de Brasília (BRB)</td>
+ <td>Beta</td>
+  <td>Beta</td>
+ </tr>
+ <tr>
+ <td>Banco do Brasil</td>
+ <td>Beta</td>
+  <td>Beta</td>
+ </tr>
+ <tr>
+  <td>Banco do Nordeste</td>
+  <td>Beta</td>
+   <td>Beta</td>
+  </tr>
+ <tr>
+ <td>Bradesco</td>
+ <td>Homologado</td>
+ <td>Homologado</td>
+ </tr>
+<tr>
+ <td>Caixa (SIGCB)</td>
+ <td>Beta</td>
+ <td>Homologado</td>
+ </tr>
+<tr>
+ <td>Cecred</td>
+ <td>Beta</td>
+ <td>Beta</td>
+ </tr>
+ <tr>
+   <td>HSBC</td>
+   <td>Beta</td>
+   <td>Beta</td>
+ </tr>
+<tr>
+ <td>Itaú</td>
+ <td>Beta</td>
+ <td>Homologado</td>
+ </tr>
+<tr>
+ <td>Santander</td>
+ <td>Beta</td>
+ <td>Beta</td>
+ </tr>
+<tr>
+ <td>Sicoob</td>
+ <td>Homologado</td>
+ <td>Beta</td>
+ </tr>
+<tr>
+ <td>Unicred</td>
+ <td>Beta</td>
+ <td>Beta</td>
+ </tr>
+<tr>
+ <td>Viacredi</td>
+ <td>Beta</td>
+ <td>Beta</td>
+ </tr>
+<tr>
+ <td>Sicredi</td>
+ <td>Beta</td>
+ <td>Beta</td>
+ </tr>
+ <tr>
+ <td>Banrisul</td>
+ <td>Beta</td>
+ <td>Beta</td>
+ </tr>
+ </table>
+## Integração com QuilhaSoft/JasperPHP
+
+QuilhaSoft/JasperPHP é uma biblioteca puro PHP, que gera o boleto no formato PDF sem conversão do HTML, o layout do boleto pode ser editado com o JasperSoft Studio
+
+Para ver funcionando abra o exemplo em https://github.com/QuilhaSoft/JasperPHP-OpenBoleto
 
 Toda contribuição é bem vinda. Se você deseja adaptar o OpenBoleto a algum outro banco, fique à vontade para explorar o código, veja como é bastante simples integrar qualquer banco à biblioteca.
 

@@ -161,6 +161,12 @@ abstract class BoletoAbstract
     protected $numeroDocumento;
 
     /**
+     * Número da parcelas
+     * @var int
+     */
+    protected $numParcelas;
+
+    /**
      * Define o número sequencial definido pelo cliente para compor o Nosso Número
      *
      * @var int
@@ -252,9 +258,6 @@ abstract class BoletoAbstract
     protected $instrucoes = array('Pagar até a data do vencimento.');
 
     /**
-     * Recebe o Objeto que conterá o número febraban e a linha digitável.
-     * Muito útil para casos em que estes números são gerados por programas de terceitos
-     * 
      * @var Febraban|null
      */
     protected $febraban = null;
@@ -282,7 +285,20 @@ abstract class BoletoAbstract
      * @var string
      */
     protected $logoBanco;
+    
+    /**
+    * Array que sera exportada pelo metodo getData
+    * @var array
+    */
+    protected $data;
 
+    /**
+     * Imprime ou não as instruções de impressão
+     * @var array
+     */
+    protected $imprimeInstrucoesImpressao = true;
+    
+    
     /**
      * Construtor
      *
@@ -598,6 +614,19 @@ abstract class BoletoAbstract
         $this->numeroDocumento = $numeroDocumento;
         return $this;
     }
+    
+    /**
+     * Define o Número da parcela
+     *
+     * @param int $numParcelas
+     * @return BoletoAbstract
+     */
+    public function setNumParcelas($numParcelas)
+    {
+        //echo $numParcelas;
+        $this->numParcelas = $numParcelas;
+        return $this;
+    }
 
     /**
      * Retorna o campo Número do documento
@@ -695,6 +724,25 @@ abstract class BoletoAbstract
     public function getInstrucoes()
     {
         return $this->instrucoes;
+    }
+
+    /**
+     * @param   Febraban|null  $febreban
+     * @return  this
+     */
+    public function setFebraban(Febraban $febraban = null)
+    {
+        $this->febraban = $febraban;
+
+        return $this;
+    }
+
+    /**
+     * @return  Febraban|null
+     */
+    public function getFebraban()
+    {
+        return $this->febraban;
     }
 
     /**
@@ -1008,29 +1056,10 @@ abstract class BoletoAbstract
     }
 
     /**
-     * @param   Febraban  $febraban
-     * @return  this
-     */
-    public function setFebraban(Febraban $febraban)
-    {
-        $this->febraban = $febraban;
-
-        return $this;
-    }
-
-    /**
-     * @return  Febraban|null
-     */
-    public function getFebraban()
-    {
-        return $this->febraban;
-    }
-
-    /**
      * Define o nome da atual arquivo de view (template)
      *
-     * @param   string  $layout
-     * @return  BoletoAbstract
+     * @param string $layout
+     * @return BoletoAbstract
      */
     public function setLayout($layout)
     {
@@ -1057,7 +1086,6 @@ abstract class BoletoAbstract
     public function setResourcePath($resourcePath)
     {
         $this->resourcePath = $resourcePath;
-
         return $this;
     }
 
@@ -1070,17 +1098,38 @@ abstract class BoletoAbstract
     {
         return $this->resourcePath;
     }
+    
+    /**
+     * Define se imprime ou não as instruções de impressão
+     *
+     * @param bool $imprimeInstrucoesImpressao
+     * @return BoletoAbstract
+     */
+    public function setImprimeInstrucoesImpressao($imprimeInstrucoesImpressao)
+    {
+        $this->imprimeInstrucoesImpressao = $imprimeInstrucoesImpressao;
+        return $this;
+    }
+    
+    /**
+     * Retorna se imprime ou não as instruções de impressão
+     *
+     * @return bool
+     */
+    public function getImprimeInstrucoesImpressao()
+    {
+        return $this->imprimeInstrucoesImpressao;
+    }
 
     /**
      * Define a localização do logotipo do banco relativo à pasta de imagens
      *
-     * @param   string  $logoBanco
-     * @return  BoletoAbstract
+     * @param string $logoBanco
+     * @return BoletoAbstract
      */
     public function setLogoBanco($logoBanco)
     {
         $this->logoBanco = $logoBanco;
-
         return $this;
     }
 
@@ -1114,8 +1163,8 @@ abstract class BoletoAbstract
      * Define a localização exata do logotipo da empresa.
      * Note que este não é relativo à pasta de imagens
      *
-     * @param   string  $logoPath
-     * @return  BoletoAbstract
+     * @param string $logoPath
+     * @return BoletoAbstract
      */
     public function setLogoPath($logoPath)
     {
@@ -1213,7 +1262,7 @@ abstract class BoletoAbstract
     {
         ob_start();
 
-        extract(array(
+        $this->data = array(
             'linha_digitavel' => $this->getLinhaDigitavel(),
             'cedente' => $this->getCedente()->getNome(),
             'cedente_cpf_cnpj' => $this->getCedente()->getDocumento(),
@@ -1252,10 +1301,15 @@ abstract class BoletoAbstract
             'uso_banco' => $this->getUsoBanco(),
             'codigo_barras' => $this->getImagemCodigoDeBarras(),
             'resource_path' => $this->getResourcePath(),
-        ));
-
-        // Override view variables when rendering
-        extract($this->getViewVars());
+            'numero_febraban' => $this->getNumeroFebraban(),
+            'imprime_instrucoes_impressao' => $this->getImprimeInstrucoesImpressao()
+        );
+        
+        
+        
+        $this->data = array_merge($this->data,$this->getViewVars());
+        
+        extract($this->data);
 
         // Ignore errors inside the template
         @include $this->getResourcePath() . '/views/' . $this->getLayout();
@@ -1297,8 +1351,8 @@ abstract class BoletoAbstract
      */
     public function getNumeroFebraban()
     {
-        if ( ! is_null($this->febraban) ) {
-            return $this->febraban->getNumeroFebraban();
+        if ( ! is_null($this->getFebraban()) ) {
+            return $this->getFebraban()->getNumeroFebraban();
         }
 
         return self::zeroFill($this->getCodigoBanco(), 3) . $this->getMoeda() . $this->getDigitoVerificador() . $this->getFatorVencimento() . $this->getValorZeroFill() . $this->getCampoLivre();
@@ -1324,8 +1378,8 @@ abstract class BoletoAbstract
      */
     public function getLinhaDigitavel()
     {
-        if ( ! is_null($this->febraban) ) {
-            return $this->febraban->getLinhaDigitavel();
+        if ( ! is_null($this->getFebraban()) ) {
+            return $this->getFebraban()->getLinhaDigitavel();
         }
 
         $chave = $this->getCampoLivre();
@@ -1441,6 +1495,20 @@ abstract class BoletoAbstract
         '<div class="white thin"></div>' .
         '<div class="black thin"></div>' .
         '</div>';
+    }
+    
+    /**
+    * Retorna os dados do boleto em um array para ser usado externamente
+    *
+    * @return array
+    */
+    public function getData()
+    {
+        if(empty($this->data))
+        {
+            $this->getOutput();  
+        }  
+        return $this->data;               
     }
 
     /**
