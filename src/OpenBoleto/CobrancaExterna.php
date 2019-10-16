@@ -3,14 +3,20 @@
 namespace OpenBoleto;
 
 /**
- * Febraban
- * 
+ * CobrancaExterna
+ *
  * @author  Matheus Lopes Santos <fale_com_lopez@hotmail.com>
  * @version 1.0.0
- * @since   03/10/2019
+ * @since   15/10/2019
+ * @package OpenBoleto
  */
-class Febraban
+class CobrancaExterna
 {
+    /**
+     * @var string
+     */
+    protected $nossoNumero;
+
     /**
      * @var string
      */
@@ -22,13 +28,23 @@ class Febraban
     protected $numeroFebraban;
 
     /**
+     * @param   string  $nossoNumero
      * @param   string  $linhaDigitavel
      * @param   string  $numeroFebraban
      */
-    public function __construct($linhaDigitavel, $numeroFebraban)
+    public function __construct($nossoNumero, $linhaDigitavel, $numeroFebraban)
     {
-        $this->linhaDigitavel   = $linhaDigitavel;
-        $this->numeroFebraban   = $numeroFebraban;
+        $this->nossoNumero = $nossoNumero;
+        $this->linhaDigitavel = $linhaDigitavel;
+        $this->numeroFebraban = $numeroFebraban;
+    }
+
+    /**
+     * @return  string
+     */
+    public function getNossoNumero()
+    {
+        return $this->nossoNumero;
     }
 
     /**

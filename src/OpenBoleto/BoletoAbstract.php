@@ -258,9 +258,9 @@ abstract class BoletoAbstract
     protected $instrucoes = array('Pagar até a data do vencimento.');
 
     /**
-     * @var Febraban|null
+     * @var \OpenBoleto\CobrancaExterna|null
      */
-    protected $febraban = null;
+    protected $cobranca;
 
     /**
      * Nome do arquivo de template a ser usado
@@ -727,22 +727,22 @@ abstract class BoletoAbstract
     }
 
     /**
-     * @param   Febraban|null  $febreban
-     * @return  this
+     * @param   \OpenBoleto\CobrancaExterna|null  $cobranca
+     * @return  $this
      */
-    public function setFebraban(Febraban $febraban = null)
+    public function setCobranca(CobrancaExterna $cobranca = null)
     {
-        $this->febraban = $febraban;
+        $this->cobranca = $cobranca;
 
         return $this;
     }
 
     /**
-     * @return  Febraban|null
+     * @return  \OpenBoleto\CobrancaExterna|null
      */
-    public function getFebraban()
+    public function getCobranca()
     {
-        return $this->febraban;
+        return $this->cobranca;
     }
 
     /**
@@ -1201,6 +1201,10 @@ abstract class BoletoAbstract
      */
     public function getNossoNumero($incluirFormatacao = true)
     {
+        if ( ! is_null($this->getCobranca()) ) {
+            return $this->getCobranca()->getNossoNumero();
+        }
+
         $numero = $this->gerarNossoNumero();
 
         // TODO: Fazer cache do nosso número para evitar múltiplas chamadas
@@ -1262,7 +1266,7 @@ abstract class BoletoAbstract
     {
         ob_start();
 
-        $this->data = array(
+        $this->data = [
             'linha_digitavel' => $this->getLinhaDigitavel(),
             'cedente' => $this->getCedente()->getNome(),
             'cedente_cpf_cnpj' => $this->getCedente()->getDocumento(),
@@ -1289,8 +1293,8 @@ abstract class BoletoAbstract
             'sacado_documento' => $this->getSacado()->getDocumento(),
             'sacado_endereco1' => $this->getSacado()->getEndereco(),
             'sacado_endereco2' => $this->getSacado()->getCepCidadeUf(),
-            'demonstrativo' => (array) $this->getDescricaoDemonstrativo() + array(null, null, null, null, null), // Max: 5 linhas
-            'instrucoes' => (array) $this->getInstrucoes() + array(null, null, null, null, null, null, null, null), // Max: 8 linhas
+            'demonstrativo' => (array) $this->getDescricaoDemonstrativo() + [null, null, null, null, null], // Max: 5 linhas
+            'instrucoes' => (array) $this->getInstrucoes() + [null, null, null, null, null, null, null, null], // Max: 8 linhas
             'local_pagamento' => $this->getLocalPagamento(),
             'numero_documento' => $this->getNumeroDocumento(),
             'agencia_codigo_cedente'=> $this->getAgenciaCodigoCedente(),
@@ -1303,9 +1307,7 @@ abstract class BoletoAbstract
             'resource_path' => $this->getResourcePath(),
             'numero_febraban' => $this->getNumeroFebraban(),
             'imprime_instrucoes_impressao' => $this->getImprimeInstrucoesImpressao()
-        );
-        
-        
+        ];
         
         $this->data = array_merge($this->data,$this->getViewVars());
         
@@ -1345,14 +1347,13 @@ abstract class BoletoAbstract
     }
 
     /**
-     * Retorna o número Febraban
-     *
-     * @return string
+     * @return  string
+     * @throws  \OpenBoleto\Exception
      */
     public function getNumeroFebraban()
     {
-        if ( ! is_null($this->getFebraban()) ) {
-            return $this->getFebraban()->getNumeroFebraban();
+        if ( ! is_null($this->getCobranca()) ) {
+            return $this->getCobranca()->getNumeroFebraban();
         }
 
         return self::zeroFill($this->getCodigoBanco(), 3) . $this->getMoeda() . $this->getDigitoVerificador() . $this->getFatorVencimento() . $this->getValorZeroFill() . $this->getCampoLivre();
@@ -1378,8 +1379,8 @@ abstract class BoletoAbstract
      */
     public function getLinhaDigitavel()
     {
-        if ( ! is_null($this->getFebraban()) ) {
-            return $this->getFebraban()->getLinhaDigitavel();
+        if ( ! is_null($this->getCobranca()) ) {
+            return $this->getCobranca()->getLinhaDigitavel();
         }
 
         $chave = $this->getCampoLivre();
@@ -1430,7 +1431,8 @@ abstract class BoletoAbstract
     /**
      * Retorna a string contendo as imagens do código de barras, segundo o padrão Febraban
      *
-     * @return string
+     * @return  string
+     * @throws  \OpenBoleto\Exception
      */
     public function getImagemCodigoDeBarras()
     {
