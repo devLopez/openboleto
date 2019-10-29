@@ -1144,7 +1144,10 @@ abstract class BoletoAbstract
     }
 
     /**
-     * Retorna o logotipo do banco em Base64, pronto para ser inserido na página
+     * Retorna o logotipo do banco em Base64, pronto para ser inserido na página.
+     * Neste caso, forçamos o uso do PNG para impedir possiveis erros com relação
+     * à manipulação de arquivos JPG por possíveis geradores de PDF, como o
+     * WkHtmlToPdf
      *
      * @return string
      */
@@ -1152,7 +1155,7 @@ abstract class BoletoAbstract
     {
         static $logoData;
 
-        $logoData or $logoData = 'data:image/' . pathinfo($this->getLogoBanco(), PATHINFO_EXTENSION) .
+        $logoData or $logoData = 'data:image/png' .
             ';base64,' . base64_encode(file_get_contents($this->getResourcePath() .
             '/images/' . $this->getLogoBanco()));
 
