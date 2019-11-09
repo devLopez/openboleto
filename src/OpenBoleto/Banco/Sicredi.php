@@ -53,7 +53,7 @@ class Sicredi extends BoletoAbstract {
      * pois algumas agências exigem o logo da UNICRED ou SICREDI
      * @var string
      */
-    protected $logoBanco = 'sicredi.jpg';
+    protected $logoBanco = 'sicredi.png';
 
     /**
      * Linha de local de pagamento
