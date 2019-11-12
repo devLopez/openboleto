@@ -50,7 +50,7 @@ class BancoDoNordeste extends BoletoAbstract
      * Localização do logotipo do banco, referente ao diretório de imagens
      * @var string
      */
-    protected $logoBanco = 'bnb.jpg';
+    protected $logoBanco = 'bnb.png';
 
     /**
      * Linha de local de pagamento

@@ -50,7 +50,7 @@ class Banrisul extends BoletoAbstract
      * Localização do logotipo do banco, referente ao diretório de imagens
      * @var string
      */
-    protected $logoBanco = 'banrisul.jpg';
+    protected $logoBanco = 'banrisul.png';
 
     /**
      * Linha de local de pagamento

@@ -58,7 +58,7 @@ class Cecred extends BoletoAbstract
      * Localização do logotipo do banco, referente ao diretório de imagens
      * @var string
      */
-    protected $logoBanco = 'cecred.jpg';
+    protected $logoBanco = 'cecred.png';
 
     /**
      * Linha de local de pagamento

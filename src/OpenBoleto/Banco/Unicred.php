@@ -51,7 +51,7 @@ class Unicred extends BoletoAbstract
      * Localização do logotipo do banco, referente ao diretório de imagens
      * @var string
      */
-    protected $logoBanco = 'unicred.jpg';
+    protected $logoBanco = 'unicred.png';
 
     /**
      * Define as carteiras disponíveis para este banco

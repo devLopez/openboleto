@@ -51,7 +51,7 @@ class BancoDoBrasil extends BoletoAbstract
      * Localização do logotipo do banco, referente ao diretório de imagens
      * @var string
      */
-    protected $logoBanco = 'bb.jpg';
+    protected $logoBanco = 'bb.png';
 
     /**
      * Linha de local de pagamento

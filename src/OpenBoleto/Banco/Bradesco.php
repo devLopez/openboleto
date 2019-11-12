@@ -50,7 +50,7 @@ class Bradesco extends BoletoAbstract
      * Localização do logotipo do banco, referente ao diretório de imagens
      * @var string
      */
-    protected $logoBanco = 'bradesco.jpg';
+    protected $logoBanco = 'bradesco.png';
 
     /**
      * De acordo com o ramo de atividade, poderão ser utilizadas uma das siglas: DM-

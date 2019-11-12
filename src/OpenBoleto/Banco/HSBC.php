@@ -50,7 +50,7 @@ class HSBC extends BoletoAbstract
      * Localização do logotipo do banco, referente ao diretório de imagens
      * @var string
      */
-    protected $logoBanco = 'hsbc.jpg';
+    protected $logoBanco = 'hsbc.png';
 
     /**
      * Linha de local de pagamento

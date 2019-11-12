@@ -50,7 +50,7 @@ class Itau extends BoletoAbstract
      * Localização do logotipo do banco, referente ao diretório de imagens
      * @var string
      */
-    protected $logoBanco = 'itau.jpg';
+    protected $logoBanco = 'itau.png';
 
     /**
      * Linha de local de pagamento

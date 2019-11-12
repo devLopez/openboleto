@@ -50,7 +50,7 @@ class Sicoob extends BoletoAbstract
      * Localização do logotipo do banco, referente ao diretório de imagens
      * @var string
      */
-    protected $logoBanco = 'sicoob.jpg';
+    protected $logoBanco = 'sicoob.png';
 
     /**
      * Define as carteiras disponíveis para este banco
